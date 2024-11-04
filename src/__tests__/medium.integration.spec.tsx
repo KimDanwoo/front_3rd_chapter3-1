@@ -4,13 +4,48 @@ import { UserEvent, userEvent } from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { ReactElement } from 'react';
 
+import { setupMockHandlerCreation } from '../__mocks__/handlersUtils';
 import App from '../App';
 import { server } from '../setupTests';
 import { Event } from '../types';
 
+const renderApp = () => {
+  return render(
+    <ChakraProvider>
+      <App />
+    </ChakraProvider>
+  );
+};
+
+let user: UserEvent;
+
+beforeEach(() => {
+  user = userEvent.setup();
+});
+``;
 describe('일정 CRUD 및 기본 기능', () => {
   it('입력한 새로운 일정 정보에 맞춰 모든 필드가 이벤트 리스트에 정확히 저장된다.', async () => {
     // ! HINT. event를 추가 제거하고 저장하는 로직을 잘 살펴보고, 만약 그대로 구현한다면 어떤 문제가 있을 지 고민해보세요.
+    setupMockHandlerCreation();
+    renderApp();
+    await user.type(screen.getByLabelText(/제목/), '프론트엔드 코드리뷰');
+    await user.type(screen.getByLabelText(/날짜/), '2024-11-04');
+    await user.type(screen.getByLabelText(/시작 시간/), '09:00');
+    await user.type(screen.getByLabelText(/종료 시간/), '10:00');
+    await user.type(screen.getByLabelText(/설명/), '중간점검');
+    await user.type(screen.getByLabelText(/위치/), '회의실');
+    await user.selectOptions(screen.getByLabelText(/카테고리/), '업무');
+
+    await user.click(screen.getByRole('button', { name: /일정 추가/ }));
+
+    const eventList = screen.getByTestId('event-list');
+    expect(within(eventList).getByText('프론트엔드 코드리뷰')).toBeInTheDocument();
+    expect(within(eventList).getByText('2024-11-04')).toBeInTheDocument();
+    expect(within(eventList).getByText(/09:00/)).toBeInTheDocument();
+    expect(within(eventList).getByText(/10:00/)).toBeInTheDocument();
+    expect(within(eventList).getByText('중간점검')).toBeInTheDocument();
+    expect(within(eventList).getByText('회의실')).toBeInTheDocument();
+    expect(within(eventList).getByText(/업무/)).toBeInTheDocument();
   });
 
   it('기존 일정의 세부 정보를 수정하고 변경사항이 정확히 반영된다', async () => {});
