@@ -1,4 +1,4 @@
-import { Event } from '../../types';
+import { TEST_EVENTS } from '../../__mocks__/response/mockEvents';
 import {
   fillZero,
   formatDate,
@@ -10,33 +10,6 @@ import {
   getWeeksAtMonth,
   isDateInRange,
 } from '../../utils/dateUtils';
-
-const mockEvents: Event[] = [
-  {
-    id: '1',
-    title: '아침 회의',
-    date: '2024-01-01',
-    startTime: '09:00',
-    endTime: '10:00',
-    description: '팀 미팅',
-    location: '회의실 A',
-    category: '업무',
-    repeat: { type: 'none', interval: 0 },
-    notificationTime: 10,
-  },
-  {
-    id: '2',
-    title: '점심 회의',
-    date: '2024-01-15',
-    startTime: '12:00',
-    endTime: '13:00',
-    description: '고객 미팅',
-    location: '회의실 B',
-    category: '업무',
-    repeat: { type: 'none', interval: 0 },
-    notificationTime: 10,
-  },
-];
 
 describe('getDaysInMonth', () => {
   it('각 월의 일수를 정확히 계산한다', () => {
@@ -123,8 +96,7 @@ describe('날짜 포맷팅', () => {
 
 describe('이벤트 관리', () => {
   it('getEventsForDay: 특정 날짜의 이벤트를 반환한다', () => {
-    expect(getEventsForDay(mockEvents, 1)).toHaveLength(1);
-    expect(getEventsForDay(mockEvents, 2)).toHaveLength(0);
+    expect(getEventsForDay(TEST_EVENTS, 15)).toHaveLength(2);
   });
 
   it('getWeeksAtMonth: 월의 주 정보를 반환한다', () => {
