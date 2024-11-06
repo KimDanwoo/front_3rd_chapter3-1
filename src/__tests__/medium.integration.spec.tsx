@@ -47,9 +47,17 @@ describe('일정 CRUD 및 기본 기능', () => {
 
     await fillEventForm(user, newEvent);
     await user.click(screen.getByRole('button', { name: /일정 추가/ }));
-
     const eventList = screen.getByTestId('event-list');
-    await verifyEventInList(eventList, newEvent);
+
+    await waitFor(async () => {
+      expect(within(eventList).getByText(newEvent.title)).toBeInTheDocument();
+      expect(within(eventList).getByText(newEvent.date)).toBeInTheDocument();
+      expect(within(eventList).getByText(newEvent.description)).toBeInTheDocument();
+      expect(within(eventList).getByText(newEvent.location)).toBeInTheDocument();
+      expect(
+        within(eventList).getByText(`${newEvent.startTime} - ${newEvent.endTime}`)
+      ).toBeInTheDocument();
+    });
   });
 
   it('기존 일정의 세부 정보를 수정하고 변경사항이 정확히 반영된다', async () => {
@@ -95,12 +103,16 @@ describe('일정 CRUD 및 기본 기능', () => {
     renderApp();
 
     const eventList = await screen.findByTestId('event-list');
-    expect(within(eventList).getByText('팀점심')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(within(eventList).getByText('팀점심')).toBeInTheDocument();
+    });
 
     const deleteButton = await within(eventList).findByRole('button', { name: 'Delete event' });
     await user.click(deleteButton);
 
-    expect(within(eventList).queryByText('팀점심')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(within(eventList).queryByText('팀점심')).not.toBeInTheDocument();
+    });
   });
 });
 
@@ -252,4 +264,88 @@ it('notificationTime을 10으로 하면 지정 시간 10분 전 알람 텍스트
     expect(screen.getByText(/일정이 시작됩니다./)).toBeInTheDocument();
   });
   vi.useRealTimers();
+});
+
+describe('일정 입력값 유효성 검증', () => {
+  let user: UserEvent;
+
+  beforeEach(() => {
+    user = userEvent.setup();
+  });
+
+  it('시작 시간과 종료시간이 같으면 에러 메시지가 표시된다', async () => {
+    renderApp();
+
+    const invalidEvent = {
+      title: '잘못된 시간',
+      date: '2024-11-04',
+      startTime: '10:00',
+      endTime: '10:00',
+      description: '테스트',
+      location: '회의실',
+      category: '업무',
+    };
+
+    await fillEventForm(user, invalidEvent);
+
+    expect(screen.getByText('시작 시간은 종료 시간보다 빨라야 합니다.')).toBeInTheDocument();
+    expect(screen.getByText('종료 시간은 시작 시간보다 늦어야 합니다.')).toBeInTheDocument();
+  });
+
+  it('제목 미 입력시 에러 메시지가 표시된다.', async () => {
+    renderApp();
+
+    const newEvent = {
+      title: '',
+      date: '',
+      startTime: '09:00',
+      endTime: '10:00',
+      description: '중간점검',
+      location: '회의실',
+      category: '업무',
+    };
+
+    await fillEventForm(user, newEvent);
+    await user.click(screen.getByRole('button', { name: /일정 추가/ }));
+
+    expect(screen.getByText('필수 정보를 모두 입력해주세요.')).toBeInTheDocument();
+  });
+
+  it('날짜 미 입력시 에러 메시지가 표시된다.', async () => {
+    renderApp();
+
+    const newEvent = {
+      title: '주간 회의',
+      date: '',
+      startTime: '09:00',
+      endTime: '10:00',
+      description: '중간점검',
+      location: '회의실',
+      category: '업무',
+    };
+
+    await fillEventForm(user, newEvent);
+    await user.click(screen.getByRole('button', { name: /일정 추가/ }));
+
+    expect(screen.getByText('필수 정보를 모두 입력해주세요.')).toBeInTheDocument();
+  });
+
+  it('시간 미 입력시 에러 메시지가 표시된다.', async () => {
+    renderApp();
+
+    const newEvent = {
+      title: '주간 회의',
+      date: '2024-11-04',
+      startTime: '',
+      endTime: '10:00',
+      description: '중간점검',
+      location: '회의실',
+      category: '업무',
+    };
+
+    await fillEventForm(user, newEvent);
+    await user.click(screen.getByRole('button', { name: /일정 추가/ }));
+
+    expect(screen.getByText('필수 정보를 모두 입력해주세요.')).toBeInTheDocument();
+  });
 });
