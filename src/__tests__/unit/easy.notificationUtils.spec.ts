@@ -1,5 +1,6 @@
+import { createNotificationMessage, getUpcomingEvents } from '@features/notification/model/utils';
+
 import { FILTERED_EVENTS } from '../../__mocks__/response/mockEvents';
-import { createNotificationMessage, getUpcomingEvents } from '../../utils/notificationUtils';
 
 describe('getUpcomingEvents', () => {
   it('알림 시간이 정확히 도래한 이벤트를 반환한다', () => {

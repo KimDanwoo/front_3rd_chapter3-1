@@ -1,7 +1,7 @@
+import { Event } from '@entities/event/model/types';
+import { formatDate } from '@features/calendar/model/utils';
 import { screen, within } from '@testing-library/react';
 
-import { Event } from '../../types';
-import { formatDate } from '../../utils/dateUtils';
 import { parseHM } from '../utils';
 
 export const createTestEvent = ({

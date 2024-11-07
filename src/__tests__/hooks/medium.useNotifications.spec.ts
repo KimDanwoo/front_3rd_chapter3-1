@@ -1,7 +1,7 @@
+import { useNotifications } from '@features/notification/model/hooks';
 import { act, renderHook } from '@testing-library/react';
 import { expect, it, vi } from 'vitest';
 
-import { useNotifications } from '../../hooks/useNotifications';
 import { createTestEvent } from '../helpers';
 import { parseHM } from '../utils';
 

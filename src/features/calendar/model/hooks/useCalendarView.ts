@@ -1,6 +1,5 @@
+import { fetchHolidays } from '@shared/api';
 import { useEffect, useState } from 'react';
-
-import { fetchHolidays } from '../apis/fetchHolidays';
 
 export const useCalendarView = () => {
   const [view, setView] = useState<'week' | 'month'>('month');

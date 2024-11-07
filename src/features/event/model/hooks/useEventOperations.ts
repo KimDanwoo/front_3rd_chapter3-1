@@ -1,7 +1,6 @@
 import { useToast } from '@chakra-ui/react';
+import { Event, EventForm } from '@entities/event/model/types';
 import { useEffect, useState } from 'react';
-
-import { Event, EventForm } from '../types';
 
 export const useEventOperations = (editing: boolean, onSave?: () => void) => {
   const [events, setEvents] = useState<Event[]>([]);

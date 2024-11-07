@@ -1,7 +1,6 @@
+import { Event, RepeatType } from '@entities/event/model/types';
+import { getTimeErrorMessage } from '@features/event/model/utils';
 import { ChangeEvent, useState } from 'react';
-
-import { Event, RepeatType } from '../types';
-import { getTimeErrorMessage } from '../utils/timeValidation';
 
 type TimeErrorRecord = Record<'startTimeError' | 'endTimeError', string | null>;
 

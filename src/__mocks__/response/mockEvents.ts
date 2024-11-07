@@ -1,4 +1,4 @@
-import { Event } from '../../types';
+import { Event } from '@entities/event/model/types';
 
 export const TEST_EVENT: Event = {
   id: '1',

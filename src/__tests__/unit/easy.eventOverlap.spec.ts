@@ -1,11 +1,12 @@
-import { TEST_EVENT } from '../../__mocks__/response/mockEvents';
-import { Event, EventForm } from '../../types';
+import { Event, EventForm } from '@entities/event/model/types';
 import {
   convertEventToDateRange,
   findOverlappingEvents,
   isOverlapping,
   parseDateTime,
-} from '../../utils/eventOverlap';
+} from '@features/event/model/utils';
+
+import { TEST_EVENT } from '../../__mocks__/response/mockEvents';
 
 describe('parseDateTime', () => {
   it('2024-07-01 14:30을 정확한 Date 객체로 변환한다', () => {

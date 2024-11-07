@@ -1,7 +1,7 @@
+import { useCalendarView } from '@features/calendar/model/hooks';
 import { act, renderHook } from '@testing-library/react';
 
-import { useCalendarView } from '../../hooks/useCalendarView.ts';
-import { assertDate } from '../utils.ts';
+import { assertDate } from '../utils';
 
 describe('초기 상태', () => {
   beforeEach(() => {

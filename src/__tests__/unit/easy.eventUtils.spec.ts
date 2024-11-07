@@ -1,5 +1,6 @@
+import { getFilteredEvents } from '@features/event/model/utils';
+
 import { FILTERED_EVENTS } from '../../__mocks__/response/mockEvents';
-import { getFilteredEvents } from '../../utils/eventUtils';
 
 describe('getFilteredEvents', () => {
   // const testEvents: Event[] = [

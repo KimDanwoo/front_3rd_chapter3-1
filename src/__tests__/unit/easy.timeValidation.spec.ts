@@ -1,4 +1,4 @@
-import { getTimeErrorMessage } from '../../utils/timeValidation';
+import { getTimeErrorMessage } from '@features/event/model/utils';
 
 interface TimeErrorResult {
   startTimeError: string | null;

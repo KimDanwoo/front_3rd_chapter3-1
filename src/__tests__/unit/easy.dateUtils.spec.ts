@@ -1,4 +1,3 @@
-import { TEST_EVENTS } from '../../__mocks__/response/mockEvents';
 import {
   fillZero,
   formatDate,
@@ -9,7 +8,9 @@ import {
   getWeekDates,
   getWeeksAtMonth,
   isDateInRange,
-} from '../../utils/dateUtils';
+} from '@features/calendar/model/utils';
+
+import { TEST_EVENTS } from '../../__mocks__/response/mockEvents';
 
 describe('getDaysInMonth', () => {
   it('각 월의 일수를 정확히 계산한다', () => {

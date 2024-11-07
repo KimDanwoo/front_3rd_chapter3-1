@@ -1,7 +1,7 @@
+import { useSearch } from '@features/search/model/hooks';
 import { act, renderHook } from '@testing-library/react';
 
 import { FILTERED_EVENTS } from '../../__mocks__/response/mockEvents';
-import { useSearch } from '../../hooks/useSearch';
 
 describe('useSearch', () => {
   const getNewCurrentDate = () => new Date('2024-01-01T00:00:00.000Z');
