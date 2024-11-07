@@ -74,7 +74,7 @@ export const MonthView = ({
                           </Text>
                         )}
                         {getEventsForDay(filteredEvents, day).map((event) => {
-                          const isNotified = notifiedEvents.includes(event.id);
+                          const isNotified = notifiedEvents?.includes(event.id);
                           return (
                             <Box
                               key={event.id}

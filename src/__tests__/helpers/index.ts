@@ -1,5 +1,6 @@
 import { Event } from '@entities/event/model/types';
 import { formatDate } from '@features/calendar/model/utils';
+import { useNotificationStore } from '@features/notification/model/stores/useNotificationStore';
 import { screen, within } from '@testing-library/react';
 
 import { parseHM } from '../utils';
@@ -90,4 +91,13 @@ export const verifyEventInList = async (eventList: HTMLElement, eventData: Parti
     );
   }
   return Promise.all(assertions);
+};
+
+export const resetNotificationStore = () => {
+  useNotificationStore.setState({
+    notifications: [],
+    notifiedEvents: [],
+    setNotifications: () => {},
+    setNotifiedEvents: () => {},
+  });
 };

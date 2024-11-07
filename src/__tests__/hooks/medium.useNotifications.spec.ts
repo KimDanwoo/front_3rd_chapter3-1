@@ -1,13 +1,14 @@
-import { useNotifications } from '@features/notification/model/hooks';
+import { useNotifications } from '@features/notification/model/hooks/useNotifications';
 import { act, renderHook } from '@testing-library/react';
 import { expect, it, vi } from 'vitest';
 
-import { createTestEvent } from '../helpers';
+import { createTestEvent, resetNotificationStore } from '../helpers';
 import { parseHM } from '../utils';
 
 describe('useNotifications Hook', () => {
   beforeEach(() => {
     vi.useFakeTimers();
+    resetNotificationStore();
   });
 
   afterEach(() => {
@@ -17,6 +18,8 @@ describe('useNotifications Hook', () => {
 
   it('초기 상태에서는 알림이 없어야 한다', () => {
     const { result } = renderHook(() => useNotifications([]));
+
+    console.log(result.current);
 
     expect(result.current.notifications).toHaveLength(0);
     expect(result.current.notifiedEvents).toHaveLength(0);
@@ -82,7 +85,7 @@ describe('useNotifications Hook', () => {
   });
 
   it('여러 이벤트의 알림이 올바른 시간에 발생해야 한다', () => {
-    const event1 = createTestEvent({ minutes: 3 });
+    const event1 = createTestEvent({ minutes: 3, id: '1' });
     const event2 = createTestEvent({ minutes: 8, notificationTime: 10, id: '2' });
     const { result } = renderHook(() => useNotifications([event1, event2]));
 
@@ -90,6 +93,7 @@ describe('useNotifications Hook', () => {
       vi.advanceTimersByTime(1000);
     });
 
+    console.log(result.current.notifications);
     expect(result.current.notifications).toHaveLength(2);
     expect(result.current.notifications[0].message).toContain('5분 후');
 

@@ -9,7 +9,6 @@ interface TimeErrorRecord {
 }
 
 interface EventFormState {
-  // Form fields
   title: string;
   date: string;
   startTime: string;
@@ -27,7 +26,6 @@ interface EventFormState {
   startTimeError: string | null;
   endTimeError: string | null;
 
-  // Actions
   setTitle: (title: string) => void;
   setDate: (date: string) => void;
   setStartTime: (startTime: string) => void;
@@ -43,7 +41,6 @@ interface EventFormState {
   setEditingEvent: (event: Event | null) => void;
   setTimeErrors: (errors: TimeErrorRecord) => void;
 
-  // Complex actions
   handleStartTimeChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleEndTimeChange: (e: ChangeEvent<HTMLInputElement>) => void;
   resetForm: () => void;
@@ -51,7 +48,6 @@ interface EventFormState {
 }
 
 export const useEventFormStore = create<EventFormState>((set) => ({
-  // Initial state
   title: '',
   date: '',
   startTime: '',
@@ -72,7 +68,6 @@ export const useEventFormStore = create<EventFormState>((set) => ({
     endTimeError: null,
   },
 
-  // Basic setters
   setTitle: (title) => set({ title }),
   setDate: (date) => set({ date }),
   setStartTime: (startTime) => set({ startTime }),
@@ -88,7 +83,6 @@ export const useEventFormStore = create<EventFormState>((set) => ({
   setEditingEvent: (editingEvent) => set({ editingEvent }),
   setTimeErrors: (timeErrors) => set({ timeErrors }),
 
-  // Complex actions
   handleStartTimeChange: (e) =>
     set((state) => {
       const newStartTime = e.target.value;

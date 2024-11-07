@@ -5,15 +5,21 @@ import { Event } from '@entities/event/model/types';
 interface EventListProps {
   filteredEvents: Event[];
   notifiedEvents: string[];
-  notificationOptions: { value: number; label: string }[];
   editEvent: (event: Event) => void;
   deleteEvent: (id: string) => void;
 }
 
+const notificationOptions = [
+  { value: 1, label: '1분 전' },
+  { value: 10, label: '10분 전' },
+  { value: 60, label: '1시간 전' },
+  { value: 120, label: '2시간 전' },
+  { value: 1440, label: '1일 전' },
+];
+
 export const EventList = ({
   filteredEvents,
   notifiedEvents,
-  notificationOptions,
   editEvent,
   deleteEvent,
 }: EventListProps) => {
@@ -26,10 +32,10 @@ export const EventList = ({
         <HStack justifyContent="space-between">
           <VStack align="start">
             <HStack>
-              {notifiedEvents.includes(event.id) && <BellIcon color="red.500" />}
+              {notifiedEvents?.includes(event.id) && <BellIcon color="red.500" />}
               <Text
-                fontWeight={notifiedEvents.includes(event.id) ? 'bold' : 'normal'}
-                color={notifiedEvents.includes(event.id) ? 'red.500' : 'inherit'}
+                fontWeight={notifiedEvents?.includes(event.id) ? 'bold' : 'normal'}
+                color={notifiedEvents?.includes(event.id) ? 'red.500' : 'inherit'}
               >
                 {event.title}
               </Text>

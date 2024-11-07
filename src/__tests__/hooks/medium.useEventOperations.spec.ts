@@ -20,7 +20,7 @@ describe('useEventOperations', () => {
   it('저장되어있는 초기 이벤트 데이터를 적절하게 불러온다', async () => {
     setupMockHandlers([TEST_EVENT]);
 
-    const { result } = renderHook(() => useEventOperations(false));
+    const { result } = renderHook(() => useEventOperations());
 
     await act(async () => {
       await new Promise((resolve) => setTimeout(resolve, 0));
@@ -52,10 +52,10 @@ describe('useEventOperations', () => {
       notificationTime: 15,
     };
 
-    const { result } = renderHook(() => useEventOperations(false));
+    const { result } = renderHook(() => useEventOperations());
 
     await act(async () => {
-      await result.current.saveEvent(newEvent);
+      await result.current.saveEvent(newEvent, false);
     });
 
     expect(mockToast).toHaveBeenCalledWith(
@@ -82,16 +82,18 @@ describe('useEventOperations', () => {
       notificationTime: 15,
     };
 
-    const { result } = renderHook(() => useEventOperations(true));
+    const { result } = renderHook(() => useEventOperations());
 
     await act(async () => {
-      await result.current.saveEvent(updatedEvent as Event);
+      await result.current.saveEvent(updatedEvent as Event, true);
     });
 
     expect(mockToast).toHaveBeenCalledWith(
       expect.objectContaining({
         title: '일정이 수정되었습니다.',
         status: 'success',
+        duration: 3000,
+        isClosable: true,
       })
     );
     expect(result.current.events).toEqual([updatedEvent]);
@@ -100,7 +102,7 @@ describe('useEventOperations', () => {
   it('존재하는 이벤트 삭제 시 에러없이 아이템이 삭제된다.', async () => {
     setupMockHandlers([TEST_EVENT]);
 
-    const { result } = renderHook(() => useEventOperations(false));
+    const { result } = renderHook(() => useEventOperations());
 
     await act(async () => {
       await result.current.deleteEvent('1');
@@ -122,7 +124,7 @@ describe('useEventOperations', () => {
       })
     );
 
-    renderHook(() => useEventOperations(false));
+    renderHook(() => useEventOperations());
 
     await act(async () => {
       await new Promise((resolve) => setTimeout(resolve, 0));
@@ -143,13 +145,16 @@ describe('useEventOperations', () => {
       })
     );
 
-    const { result } = renderHook(() => useEventOperations(true));
+    const { result } = renderHook(() => useEventOperations());
 
     await act(async () => {
-      await result.current.saveEvent({
-        id: '999',
-        title: '존재하지 않는 이벤트',
-      } as Event);
+      await result.current.saveEvent(
+        {
+          id: '999',
+          title: '존재하지 않는 이벤트',
+        } as Event,
+        true
+      );
     });
 
     expect(mockToast).toHaveBeenCalledWith(
@@ -167,7 +172,7 @@ describe('useEventOperations', () => {
       })
     );
 
-    const { result } = renderHook(() => useEventOperations(false));
+    const { result } = renderHook(() => useEventOperations());
 
     await act(async () => {
       await result.current.deleteEvent('1');

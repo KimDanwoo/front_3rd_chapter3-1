@@ -2,8 +2,13 @@ import { useToast } from '@chakra-ui/react';
 import { Event, EventForm } from '@entities/event/model/types';
 import { useEffect, useState } from 'react';
 
-export const useEventOperations = (editing: boolean, onSave?: () => void) => {
+import { useEventFormStore } from '../stores';
+
+export const useEventOperations = () => {
   const [events, setEvents] = useState<Event[]>([]);
+  const { setEditingEvent } = useEventFormStore();
+  const onSave = () => setEditingEvent(null);
+
   const toast = useToast();
 
   const fetchEvents = async () => {
@@ -25,20 +30,34 @@ export const useEventOperations = (editing: boolean, onSave?: () => void) => {
     }
   };
 
-  const saveEvent = async (eventData: Event | EventForm) => {
+  const saveEvent = async (eventData: Event | EventForm, isEditing: boolean) => {
     try {
       let response;
-      if (editing) {
+      if (isEditing) {
         response = await fetch(`/api/events/${(eventData as Event).id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(eventData),
+        });
+
+        toast({
+          title: '일정이 수정되었습니다.',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
         });
       } else {
         response = await fetch('/api/events', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(eventData),
+        });
+
+        toast({
+          title: '일정이 추가되었습니다.',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
         });
       }
 
@@ -48,12 +67,6 @@ export const useEventOperations = (editing: boolean, onSave?: () => void) => {
 
       await fetchEvents();
       onSave?.();
-      toast({
-        title: editing ? '일정이 수정되었습니다.' : '일정이 추가되었습니다.',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      });
     } catch (error) {
       console.error('Error saving event:', error);
       toast({

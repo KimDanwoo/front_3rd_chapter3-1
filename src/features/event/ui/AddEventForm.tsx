@@ -20,7 +20,7 @@ interface EventFormProps {
   events: Event[];
   setOverlappingEvents: (events: Event[]) => void;
   setIsOverlapDialogOpen: (open: boolean) => void;
-  saveEvent: (event: EventForm) => Promise<void>;
+  saveEvent: (event: EventForm, isEditing: boolean) => Promise<void>;
 }
 
 const categories = ['업무', '개인', '가족', '기타'];
@@ -113,7 +113,7 @@ export const AddEventForm = ({
       setOverlappingEvents(overlapping);
       setIsOverlapDialogOpen(true);
     } else {
-      await saveEvent(eventData);
+      await saveEvent(eventData, Boolean(editingEvent));
       resetForm();
     }
   };
