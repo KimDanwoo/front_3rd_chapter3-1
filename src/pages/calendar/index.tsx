@@ -1,19 +1,17 @@
-import { Box, Flex, FormControl, FormLabel, Input, VStack } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { Event } from '@entities/event/model/types';
 import { useCalendarView } from '@features/calendar/model/hooks';
-import { CalendarView } from '@features/calendar/ui';
 import { useEventOperations } from '@features/event/model/hooks';
-import { useEventFormStore } from '@features/event/model/stores';
-import { AddEventForm, ClashEventDialog, EventList } from '@features/event/ui';
+import { AddEventForm, ClashEventDialog } from '@features/event/ui';
 import { useNotifications } from '@features/notification/model/hooks';
-import { NotificationDialog } from '@features/notification/ui';
 import { useSearch } from '@features/search/model/hooks';
+import { CalendarView } from '@widgets/calendar/ui';
+import { EventView } from '@widgets/event/ui';
+import { NotificationDialog } from '@widgets/notification/ui';
 import { useRef, useState } from 'react';
 
 export const CalendarPage = () => {
-  const { editEvent } = useEventFormStore();
   const { events, saveEvent, deleteEvent } = useEventOperations();
-
   const { notifications, notifiedEvents, setNotifications } = useNotifications(events);
   const { view, currentDate } = useCalendarView();
   const { searchTerm, filteredEvents, setSearchTerm } = useSearch(events, currentDate, view);
@@ -34,23 +32,13 @@ export const CalendarPage = () => {
 
         <CalendarView filteredEvents={filteredEvents} notifiedEvents={notifiedEvents} />
 
-        <VStack data-testid="event-list" w="500px" h="full" overflowY="auto">
-          <FormControl>
-            <FormLabel>일정 검색</FormLabel>
-            <Input
-              placeholder="검색어를 입력하세요"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </FormControl>
-
-          <EventList
-            filteredEvents={filteredEvents}
-            notifiedEvents={notifiedEvents}
-            editEvent={editEvent}
-            deleteEvent={deleteEvent}
-          />
-        </VStack>
+        <EventView
+          filteredEvents={filteredEvents}
+          notifiedEvents={notifiedEvents}
+          deleteEvent={deleteEvent}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+        />
       </Flex>
 
       <ClashEventDialog

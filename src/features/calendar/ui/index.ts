@@ -1,3 +1,3 @@
 export * from './MonthView';
 export * from './WeekView';
-export * from './CalendarView';
+export * from './CalenderController';

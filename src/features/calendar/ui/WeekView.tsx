@@ -17,17 +17,13 @@ import { formatWeek, getWeekDates } from '@features/calendar/model/utils';
 
 interface WeekViewProps {
   currentDate: Date;
-  weekDays: string[];
   filteredEvents: Event[];
   notifiedEvents: string[];
 }
 
-export const WeekView = ({
-  currentDate,
-  weekDays,
-  filteredEvents,
-  notifiedEvents,
-}: WeekViewProps) => {
+const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
+
+export const WeekView = ({ currentDate, filteredEvents, notifiedEvents }: WeekViewProps) => {
   const weekDates = getWeekDates(currentDate);
   return (
     <VStack data-testid="week-view" align="stretch" w="full" spacing={4}>
