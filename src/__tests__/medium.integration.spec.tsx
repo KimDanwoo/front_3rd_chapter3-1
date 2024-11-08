@@ -114,7 +114,7 @@ describe('일정 CRUD 및 기본 기능', () => {
 
 describe('일정 뷰', () => {
   it('주별 뷰를 선택 후 해당 주에 일정이 없으면, 일정이 표시되지 않는다.', async () => {
-    setupMockHandlers([{ ...TEST_EVENT, date: '2024-11-30' }]);
+    setupMockHandlers([{ ...TEST_EVENT, date: '2024-12-01' }]);
     renderApp();
 
     await user.selectOptions(screen.getByLabelText(/view/), 'week');
