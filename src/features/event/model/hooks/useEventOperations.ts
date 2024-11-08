@@ -6,6 +6,8 @@ import { useEventFormStore } from '../stores';
 
 export const useEventOperations = () => {
   const [events, setEvents] = useState<Event[]>([]);
+  const [isOverlapDialogOpen, setIsOverlapDialogOpen] = useState(false);
+  const [overlappingEvents, setOverlappingEvents] = useState<Event[]>([]);
   const { setEditingEvent } = useEventFormStore();
   const onSave = () => setEditingEvent(null);
 
@@ -118,5 +120,14 @@ export const useEventOperations = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { events, fetchEvents, saveEvent, deleteEvent };
+  return {
+    events,
+    fetchEvents,
+    saveEvent,
+    deleteEvent,
+    isOverlapDialogOpen,
+    setIsOverlapDialogOpen,
+    overlappingEvents,
+    setOverlappingEvents,
+  };
 };

@@ -8,25 +8,11 @@ import {
   Button,
   Text,
 } from '@chakra-ui/react';
-import { Event } from '@entities/event/model/types';
-import React from 'react';
+import { useEventOperations } from '@features/event/model/hooks';
+import { useEventFormStore, useEventStore } from '@features/event/model/stores';
+import { useRef } from 'react';
 
-import { useEventOperations } from '../model/hooks';
-import { useEventFormStore } from '../model/stores';
-
-interface ClashEventDialogProps {
-  isOverlapDialogOpen: boolean;
-  setIsOverlapDialogOpen: (isOpen: boolean) => void;
-  overlappingEvents: Event[];
-  cancelRef: React.RefObject<HTMLButtonElement>;
-}
-
-export const ClashEventDialog = ({
-  isOverlapDialogOpen,
-  setIsOverlapDialogOpen,
-  overlappingEvents,
-  cancelRef,
-}: ClashEventDialogProps) => {
+export const ClashEventDialog = () => {
   const {
     title,
     date,
@@ -42,6 +28,9 @@ export const ClashEventDialog = ({
     notificationTime,
     editingEvent,
   } = useEventFormStore();
+  const { isOverlapDialogOpen, setIsOverlapDialogOpen, overlappingEvents } = useEventStore();
+
+  const cancelRef = useRef<HTMLButtonElement>(null);
 
   const { saveEvent } = useEventOperations();
 

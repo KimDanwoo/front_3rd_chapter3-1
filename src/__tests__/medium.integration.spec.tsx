@@ -240,6 +240,8 @@ describe('일정 충돌', () => {
     await user.click(screen.getByRole('button', { name: /일정 추가/ }));
 
     expect(screen.getByText('일정 겹침 경고')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /취소/ }));
   });
 
   it('기존 일정의 시간을 수정하여 충돌이 발생하면 경고가 노출된다', async () => {
